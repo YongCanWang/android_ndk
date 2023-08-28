@@ -9,7 +9,8 @@
 #include "utils/LogUtil.h"
 
 //extern "C" {
-#define JNIREG_CLASS "com/mapscloud/jni/utils/NativeUtils"//指定要注册的类
+//#define JNIREG_CLASS "com/mapscloud/jni/utils/NativeUtils"//指定要注册的类
+#define JNIREG_CLASS "com/mapscloud/libnativemate/NativeUtils"// TODO 指定要注册的类
 
 JNIEXPORT  jstring JNICALL native_getNativeUtils(JNIEnv *env, jclass clazz) {
     return env->NewStringUTF("33000");
@@ -31,14 +32,21 @@ JNIEXPORT int JNICALL native3_getNativeUtils(JNIEnv *env, jclass clazz, jstring 
     return 33222;
 }
 
-
+/**
+ *  native与java的互相调用： 找到类->找到方法->找到返回值
+ * @param env
+ * @param clazz
+ * @param obj
+ * @param jint1
+ * @return
+ */
 JNIEXPORT jint JNICALL getJavaUtils(JNIEnv *env, jclass clazz, jobject obj, jint jint1) {
 //JNIEXPORT jint JNICALL getJavaUtils(JNIEnv *env, jclass claz, jint jint1) {
     LOGCATE("NativeUtils-getJavaUtils: getJavaIndex()---------------------1");
     jclass jc = env->GetObjectClass(obj); // 获取NativeConnector 映射类
 //    jclass jc = env->FindClass("com/mapscloud/jni/RequestNative");
     LOGCATE("NativeUtils-getJavaUtils: getJavaIndex()---------------------2");
-    jmethodID jmethodID1 = env->GetMethodID(jc, "getJavaIndex", "()I"); // 方法ID
+    jmethodID jmethodID1 = env->GetMethodID(jc, "getJavaIndex", "()I"); // 返回java方法的方法ID,参2为java的方法名
     LOGCATE("NativeUtils-getJavaUtils: getJavaIndex()---------------------3");
 //    jmethodID jmethodID2 = env->GetMethodID(jc, "getNativeUtils", "(I)C"); // 方法ID
 //    jmethodID jmethodID3 = env->GetMethodID(jc, "getNativeUtils", "(C)I"); // 方法ID
@@ -53,7 +61,7 @@ JNIEXPORT jint JNICALL getJavaUtils(JNIEnv *env, jclass clazz, jobject obj, jint
 //    LOGCATE("NativeUtils-getUtilsBool: getJavaStr()", c);
 //    LOGCATE("NativeUtils-getUtilsBool: getJavaStaticInt()", si);
 //    LOGCATE("NativeUtils-getUtilsBool: javaInt", k);
-
+    LOGCATE("NativeUtils-getJavaUtils: getJavaIndex()---------------------4", i);
     return i;
 }
 

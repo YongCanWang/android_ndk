@@ -15,18 +15,35 @@ class RequestNative {
 
     constructor(context: Context) {
         NDKMate()
-        Log.e("tomcan", "getNativeMethod:" + NativePort.getNativeMethod())
-        Log.e("tomcan", "getNativeMethod:" + NativePort.getNativeMethod(456))
-        Log.e("tomcan", "getNativeMethod:" + NativePort.getNativeMethod("tomcan"))
 
-        Log.e("tomcan", "getNativeUtils:" + NativeUtils.getNativeUtils())
-        Log.e("tomcan", "getNativeUtils:" + NativeUtils.getNativeUtils(2))
-        Log.e("tomcan", "getNativeUtils:" + NativeUtils.getNativeUtils("tomcan"))
-        Log.e("tomcan", "getNativeUtils:" + NativeUtils.getJavaUtils( this, 2))
-        Toast.makeText(context, NativePort.getNativeMethod(456), Toast.LENGTH_LONG).show()
+        Log.e("tomcan", "NativeMate-getNativeMate:"
+                + com.mapscloud.libnativemate.NativeMate.getNativeMate())
+        Log.e("tomcan", "NativeMate-getNativeMate:"
+                + com.mapscloud.libnativemate.NativeMate.getNativeMate(0))
+        Log.e("tomcan", "NativeMate-getNativeMate:"
+                + com.mapscloud.libnativemate.NativeMate.getNativeMate(""))
+
+        Log.e("tomcan", "NativePort-getNativeMethod:"
+                + com.mapscloud.libnativemate.NativePort.getNativeMethod())
+        Log.e("tomcan", "NativePort-getNativeMethod:"
+                + com.mapscloud.libnativemate.NativePort.getNativeMethod(456))
+        Log.e("tomcan", "NativePort-getNativeMethod:"
+                + com.mapscloud.libnativemate.NativePort.getNativeMethod("tomcan"))
+
+        Log.e("tomcan", "getNativeUtils:"
+                + com.mapscloud.libnativemate.NativeUtils.getNativeUtils())
+        Log.e("tomcan", "getNativeUtils:"
+                + com.mapscloud.libnativemate.NativeUtils.getNativeUtils(2))
+        Log.e("tomcan", "getNativeUtils:"
+                + com.mapscloud.libnativemate.NativeUtils.getNativeUtils("tomcan"))
+        Log.e("tomcan", "getNativeUtils:"
+                + com.mapscloud.libnativemate.NativeUtils.getJavaUtils( this, 2))
     }
 
 
+    /**
+     * 供C++调用的java方法
+     */
     fun getJavaIndex(): Int {
         return 6666
     }
