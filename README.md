@@ -1,2 +1,2 @@
-# android_jni
-android jni
+# android_ndk
+android ndk

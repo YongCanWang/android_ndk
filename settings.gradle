@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "android_jni"
+rootProject.name = "android_ndk"
 include ':app'
 include ':libnativemate'
+include ':libprebuild'

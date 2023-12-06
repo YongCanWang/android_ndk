@@ -13,9 +13,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+
         ndk {
             // 模块名称，即编译的.so文件名
-            moduleName "libNativePort_JNI"
+            moduleName "NativePort-Android"
 //            abiFilters "armeabi","armeabi-v7a","x86"
 //            abiFilters "armeabi","armeabi-v7a"
             /* ABIs [armeabi] are not supported for platform. Supported ABIs are [arm64-v8a, armeabi-v7a, x86, x86_64]. */
@@ -39,11 +45,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+
+
+
+
     externalNativeBuild {
+//        cmake {
+//            path "src/main/cpp/basic/CMakeLists.txt"
+//            version "3.10.2"
+//        }
+
         cmake {
-            path "src/main/jni/CMakeLists.txt"
+            path "src/main/cpp/assimp/CMakeLists.txt"
             version "3.10.2"
         }
+
     }
 
 }
