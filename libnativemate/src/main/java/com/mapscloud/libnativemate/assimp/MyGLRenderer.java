@@ -1,4 +1,4 @@
-package com.mapscloud.ndk.assimp;
+package com.mapscloud.libnativemate.assimp;
 
 import android.content.Context;
 import android.opengl.GLES20;

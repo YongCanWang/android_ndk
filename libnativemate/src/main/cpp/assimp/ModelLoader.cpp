@@ -46,7 +46,7 @@ void ModelLoader::Viewport(int width, int height) {
 
 void ModelLoader::Render3DModel() {
     glm::mat4 mvpMat = glmMate->GetMVP();
-    assimpMate->Render3DModel(&mvpMat);
+    glesMate->Render3DModel(assimpMate->modelMeshes, &mvpMat);
 }
 
 

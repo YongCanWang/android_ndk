@@ -1,4 +1,4 @@
-package com.mapscloud.ndk.assimp;
+package com.mapscloud.libnativemate.assimp;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -12,8 +12,6 @@ import android.view.ScaleGestureDetector;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.MotionEventCompat;
 
-import com.mapscloud.libnativemate.assimp.AssimpMate;
-
 import java.io.File;
 
 /**
@@ -22,6 +20,9 @@ import java.io.File;
  * @date :2023/8/18 15:17
  */
 public class MyGLSurfaceView extends GLSurfaceView {
+    static {
+        System.loadLibrary("AssimpMate");
+    }
 
     private MyGLRenderer renderer;
     private String TAG = "MyGLSurfaceView";
@@ -51,11 +52,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(renderer);
-    }
-
-
-    static {
-        System.loadLibrary("AssimpMate");
     }
 
 

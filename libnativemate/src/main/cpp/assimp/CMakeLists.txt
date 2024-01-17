@@ -54,6 +54,8 @@ add_library(AssimpMate SHARED
         gles/ShaderMate.h
         gles/GLESMate.cpp
         gles/GLESMate.h
+        gles/MeshInfo.cpp
+        gles/MeshInfo.h
         )
 
 target_include_directories(AssimpMate PRIVATE
