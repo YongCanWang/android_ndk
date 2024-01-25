@@ -4,7 +4,7 @@
 
 #include "../../../../../distribution/assimp/include/assimp/Importer.hpp"
 #include "core/AssimpMate.h"
-#include"../../../../../../../../../../../../ApplicationManage/dev/android/Android SDK/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1/string"
+#include"../../../../../../../../../../../../ApplicationManage/dev/android/AndroidSDK/ndk/22.1.7171670/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1/string"
 #include "core/GLMMate.h"
 #include "utils/AssetHelper.h"
 

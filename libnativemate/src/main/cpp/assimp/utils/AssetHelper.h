@@ -8,6 +8,8 @@
 
 #include <jni.h>
 #include <android/asset_manager_jni.h>
+#include <__threading_support>
+//#include "threads.h"
 #include "string"
 extern "C" {
 class AssetHelper {
