@@ -117,8 +117,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         String rootPath =
                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/trans";
 //        String modelObjPath = rootPath + "/navi3/model-merge";
-        String modelObjPath = rootPath + "/data/obj";
-        File file1 = new File(modelObjPath, "Man.obj");
+        String modelObjPath = rootPath + "/obj";
+        File file1 = new File(modelObjPath, "QiZiXingChe.obj");
         Log.e(TAG, "init: 模型文件路径：" + file1.getPath());
         Log.e(TAG, "init: 模型文件是否存在：" + file1.exists());
         AssimpMate.getAssetsFilePath(context.getAssets(), context.getFilesDir().getAbsolutePath());

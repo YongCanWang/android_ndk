@@ -12,11 +12,10 @@
 //#include "threads.h"
 #include "string"
 extern "C" {
+const std::string TAG_ASSET = "Asset-->";
 class AssetHelper {
 
-
 private:
-    std::string TAG = "AssetHelper";
     AAssetManager *aAssetManager;
     std::string apkInternalPath;
     mutable pthread_mutex_t threadMutex;

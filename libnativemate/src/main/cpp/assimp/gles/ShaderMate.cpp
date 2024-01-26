@@ -13,20 +13,17 @@
 #include "../JNIImpl.h"
 
 
-
-
-
 /**
  * Read the shader code from assets
  */
 bool ReadShaderCode(std::string &shaderCode, std::string &shaderFileName) {
 
-    LOGCATE("Reading shader: %s", shaderFileName.c_str());
+    LOGCATE("%s ReadShaderCode->shaderFileName: %s", TAG_SHADER.c_str(), shaderFileName.c_str());
 
     // android shaders are stored in assets
     // read them using MyJNIHelper
     bool isFilePresent = assetHelper->ExtractAssetReturnFilename(shaderFileName,
-                                                                   shaderFileName);
+                                                                 shaderFileName);
     if (!isFilePresent) {
         return false;
     }
@@ -39,11 +36,12 @@ bool ReadShaderCode(std::string &shaderCode, std::string &shaderFileName) {
         }
         shaderStream.close();
     } else {
-        LOGCATE("Cannot open %s", shaderFileName.c_str());
+        LOGCATE("%s ReadShaderCode->cannot open shader file: %s", TAG_SHADER.c_str(),
+                shaderFileName.c_str());
         return false;
     }
 
-    LOGCATE("Read successfully");
+    LOGCATE("%s ReadShaderCode->read shader code successfully", TAG_SHADER.c_str());
     return true;
 }
 
@@ -56,7 +54,7 @@ bool CompileShader(GLuint &shaderID, const GLenum shaderType, std::string shader
     shaderID = glCreateShader(shaderType);
 
     // Compile Shader
-    LOGCATE("Compiling shader");
+    LOGCATE("%s CompileShader->compiling shader ID:%u", TAG_SHADER.c_str(), shaderID);
     char const *sourcePointer = shaderCode.c_str();
     glShaderSource(shaderID, 1, &sourcePointer, NULL);
     glCompileShader(shaderID);
@@ -68,13 +66,14 @@ bool CompileShader(GLuint &shaderID, const GLenum shaderType, std::string shader
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
     glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
     if (result == 0) {
-        LOGCATE("Failed to compile shader");
+
         std::vector<char> shaderErrorMessage(infoLogLength + 1);
         glGetShaderInfoLog(shaderID, infoLogLength, NULL, &shaderErrorMessage[0]);
-        LOGCATE("%s", &shaderErrorMessage[0]);
+        LOGCATE("%s CompileShader->failed to compile shader:%s", TAG_SHADER.c_str(),
+                &shaderErrorMessage[0]);
         return false;
     } else {
-        LOGCATE("Compiled shader successfully");
+        LOGCATE("%s CompileShader->compiled shader successfully", TAG_SHADER.c_str());
     }
 
     return true;
@@ -88,7 +87,9 @@ bool LinkProgram(GLuint programID, GLuint vertexShaderID,
     GLint result = GL_FALSE;
     int infoLogLength;
 
-    LOGCATE("Linking program");
+
+    LOGCATE("%s LinkProgram->linking program:programID=%u,vertexShaderID=%u,fragmentShaderID=%u",
+            TAG_SHADER.c_str(), programID, vertexShaderID, fragmentShaderID);
 
     glAttachShader(programID, vertexShaderID);
     glAttachShader(programID, fragmentShaderID);
@@ -107,18 +108,17 @@ bool LinkProgram(GLuint programID, GLuint vertexShaderID,
     }
 
     if (result == 0) {
-        LOGCATE("Failed to link program: %d", programID);
         std::vector<char> programErrorMessage(infoLogLength + 1);
         glGetProgramInfoLog(programID, infoLogLength, NULL,
                             &programErrorMessage[0]);
-        LOGCATE("%s", &programErrorMessage[0]);
+        LOGCATE("%s LinkProgram->failed to link program:%s", TAG_SHADER.c_str(),
+                &programErrorMessage[0]);
         if (programID) {
             glDeleteProgram(programID);
         }
         return false;
     }
-    LOGCATE("Linked successfully");
-
+    LOGCATE("%s LinkProgram->linked successfully", TAG_SHADER.c_str());
     return true;
 }
 
@@ -134,28 +134,28 @@ GLuint LoadShaders(std::string vertexShaderFilename,
     // read and compile the vertex shader
     std::string vertexShaderCode;
     if (!ReadShaderCode(vertexShaderCode, vertexShaderFilename)) {
-        LOGCATE("Error in reading Vertex shader");
+        LOGCATE("%s LoadShaders->error in reading vertex shader", TAG_SHADER.c_str());
         return 0;
     }
     if (!CompileShader(vertexShaderID, GL_VERTEX_SHADER, vertexShaderCode)) {
-        LOGCATE("Error in compiling Vertex shader");
+        LOGCATE("%s LoadShaders->error in compiling vertex shader", TAG_SHADER.c_str());
         return 0;
     }
 
     // read and compile the fragment shader
     std::string fragmentShaderCode;
     if (!ReadShaderCode(fragmentShaderCode, fragmentShaderFilename)) {
-        LOGCATE("Error in reading Fragment shader");
+        LOGCATE("%s LoadShaders->error in reading fragment shader", TAG_SHADER.c_str());
         return 0;
     }
     if (!CompileShader(fragmentShaderID, GL_FRAGMENT_SHADER, fragmentShaderCode)) {
-        LOGCATE("Error in compiling fragment shader");
+        LOGCATE("%s LoadShaders->error in compiling fragment shader", TAG_SHADER.c_str());
         return 0;
     }
 
     // Link both the shaders together
     if (!LinkProgram(programID, vertexShaderID, fragmentShaderID)) {
-        LOGCATE("Error in linking shaders");
+        LOGCATE("%s LoadShaders->error in linking shaders", TAG_SHADER.c_str());
         return 0;
     }
 
@@ -169,7 +169,8 @@ GLuint GetAttributeLocation(GLuint programID, std::string variableName) {
 
     GLint loc = glGetAttribLocation(programID, variableName.c_str());
     if (loc == -1) {
-        LOGCATE("Error in getting attribute: %s", variableName.c_str());
+        LOGCATE("%s GetAttributeLocation->error in getting attribute:", TAG_SHADER.c_str(),
+                variableName.c_str());
         return (0);
     } else {
         return ((GLuint) loc);
@@ -183,7 +184,8 @@ GLint GetUniformLocation(GLuint programID, std::string uniformName) {
 
     GLint loc = glGetUniformLocation(programID, uniformName.c_str());
     if (loc == -1) {
-        LOGCATE("error in uniform: %s", uniformName.c_str());
+        LOGCATE("%s GetUniformLocation->error in uniform: %s", TAG_SHADER.c_str(),
+                uniformName.c_str());
     } else {
         return loc;
     }

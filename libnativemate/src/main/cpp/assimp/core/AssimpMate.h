@@ -13,6 +13,7 @@
 #include "fwd.hpp"
 
 class AssimpMate {
+    const std::string TAG_ASSIMP = "Assimp-->";
 public:
     AssimpMate();
 

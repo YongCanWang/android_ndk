@@ -43,35 +43,38 @@ void AssimpMate::Render3DModel(glm::mat4 *mvpMat) {
     glUniform1i(textureSamplerLocation, 0);
 
     unsigned int numberOfLoadedMeshes = modelMeshes.size();
-    LOGCATE("GL->Render: model meshes size:%u", numberOfLoadedMeshes);
+    LOGCATE("%s Render3DModel->model meshes size:%i", TAG_ASSIMP.c_str(), numberOfLoadedMeshes);
     // render all meshesgit
     for (unsigned int n = 0; n < numberOfLoadedMeshes; ++n) {
 
         // Texture
         if (modelMeshes[n].textureIndex) {
             glBindTexture(GL_TEXTURE_2D, modelMeshes[n].textureIndex);
-            LOGCATE("GL->Render: bind the %u-th mesh's texture:%u", n, modelMeshes[n].textureIndex);
+            LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture:%i", TAG_ASSIMP.c_str(), n,
+                    modelMeshes[n].textureIndex);
         }
 
         // Faces
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelMeshes[n].faceBuffer);
-        LOGCATE("GL->Render: bind the %u-th mesh's face：%u", n, modelMeshes[n].faceBuffer);
-
+        LOGCATE("%s Render3DModel-> bind the %i-th mesh's face:%i", TAG_ASSIMP.c_str(), n,
+                modelMeshes[n].faceBuffer);
         // Vertices
         glBindBuffer(GL_ARRAY_BUFFER, modelMeshes[n].vertexBuffer);
-        LOGCATE("GL->Render: bind the %u-th mesh's vertices：%u", n, modelMeshes[n].vertexBuffer);
+        LOGCATE("%s Render3DModel-> bind the %i-th mesh's vertices:%i", TAG_ASSIMP.c_str(), n,
+                modelMeshes[n].vertexBuffer);
         glEnableVertexAttribArray(vertexAttribute);
         glVertexAttribPointer(vertexAttribute, 3, GL_FLOAT, 0, 0, 0);
 
         // Texture coords
         glBindBuffer(GL_ARRAY_BUFFER, modelMeshes[n].textureCoordBuffer);
-        LOGCATE("GL->Render: bind the %u-th mesh's texture coordinates：%u", n,
+        LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture coordinates:%i", TAG_ASSIMP.c_str(), n,
                 modelMeshes[n].textureCoordBuffer);
         glEnableVertexAttribArray(vertexUVAttribute);
         glVertexAttribPointer(vertexUVAttribute, 2, GL_FLOAT, 0, 0, 0);
 
         glDrawElements(GL_TRIANGLES, modelMeshes[n].numberOfFaces * 3, GL_UNSIGNED_INT, 0);
-        LOGCATE("GL->Render: draw the %u-th mesh：%u", n);
+        LOGCATE("%s Render3DModel-> draw the %i-th mesh:%i", TAG_ASSIMP.c_str(), n,
+                modelMeshes[n].numberOfFaces);
         // unbind buffers
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -87,7 +90,7 @@ void AssimpMate::Render3DModel(glm::mat4 *mvpMat) {
  * 为顶点位置、纹理坐标、面生成缓冲区，并将数据加载到其中
  */
 void AssimpMate::GenerateGLBuffers() {
-    LOGCATE("Assimp->Buffers: start load vertex and texture coordinates");
+    LOGCATE("%s GenerateGLBuffers-> start load vertex and texture coordinates", TAG_ASSIMP.c_str());
     struct MeshInfo newMeshInfo; // this struct is updated for each mesh in the model
     GLuint buffer;
 
@@ -95,16 +98,16 @@ void AssimpMate::GenerateGLBuffers() {
     // 对于每个网格-加载面索引，顶点位置，顶点纹理坐标
     // also copy texture index for mesh into newMeshInfo.textureIndex
     // 也复制纹理索引为网格到
-    LOGCATE("Assimp->Buffers: meshes size:%u", scene->mNumMeshes);
+    LOGCATE("%s GenerateGLBuffers-> buffers: meshes size:%i", TAG_ASSIMP.c_str(), scene->mNumMeshes);
     for (unsigned int n = 0; n < scene->mNumMeshes; ++n) {
-
         const aiMesh *mesh = scene->mMeshes[n]; // read the n-th mesh // 读取第n个网格
-        LOGCATE("Assimp->Buffers: read the %u-th mesh", n);
+        LOGCATE("%s GenerateGLBuffers-> buffers: read the %i-th mesh", TAG_ASSIMP.c_str(), n);
         // create array with faces // 创建带有面的数组
         // convert from Assimp's format to array for GLES // 将Assimp的格式转换为用于GLES的数组
         unsigned int *faceArray = new unsigned int[mesh->mNumFaces * 3];
         unsigned int faceIndex = 0;
-        LOGCATE("Assimp->Buffers:  the %u-th mesh's faces size: %u", n, mesh->mNumFaces);
+        LOGCATE("%s GenerateGLBuffers-> buffers: the %i-th mesh's faces size: %i", TAG_ASSIMP.c_str(), n,
+                mesh->mNumFaces);
         for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
             // read a face from assimp's mesh and copy it into faceArray
             // 从assimp的网格中读取一张面并将其复制到faceArray中
@@ -184,13 +187,14 @@ void AssimpMate::GenerateGLBuffers() {
  * 读取与所有材料相关的纹理，并将图像加载到GL
  */
 bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
-    LOGCATE("Assimp->Textures: Materials =  %s", modelFilePath.c_str());
+    LOGCATE("%s LoadTexturesToGL->textures: materials = %s", TAG_ASSIMP.c_str(), modelFilePath.c_str());
     // read names of textures associated with all materials
     textureNameMap.clear();
 
 
     if (scene->HasMaterials()) {
-        LOGCATE("Assimp->Textures: Materials size：%u", scene->mNumMaterials);
+        LOGCATE("%s LoadTexturesToGL->textures: materials size:%i", TAG_ASSIMP.c_str(),
+                scene->mNumMaterials);
         // 遍历materials数组（一个.mtl文件可以包含一个或多个材质定义.）
         for (unsigned int m = 0; m < scene->mNumMaterials; ++m) {
             int textureIndex = 0;
@@ -212,13 +216,12 @@ bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
             }
         }
     } else {
-        LOGCATE("Assimp->Textures: Materials is null");
+        LOGCATE("%s LoadTexturesToGL->textures: materials is null", TAG_ASSIMP.c_str());
     }
 
 
     int numTextures = (int) textureNameMap.size();
-    LOGCATE("Assimp->Textures: Textures size：%d", numTextures);
-
+    LOGCATE("%s LoadTexturesToGL->textures: textures size:%i", TAG_ASSIMP.c_str(), numTextures);
     GLuint *textureGLNames = new GLuint[numTextures];
     /**
      * Description:
@@ -237,8 +240,8 @@ bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
     // Extract the directory part from the file name // 从文件名中提取将用于读取纹理的目录部分
     // will be used to read the texture
     std::string modelTextureDirectory = GetDirectoryName(modelFilePath);
-    LOGCATE("Assimp->Textures: Textures directory：%s", modelTextureDirectory.c_str());
-
+    LOGCATE("%s LoadTexturesToGL->textures: textures directory:%s", TAG_ASSIMP.c_str(),
+            modelTextureDirectory.c_str());
     // iterate over the textures, read them using OpenCV, load into GL
     // 迭代纹理，使用OpenCV读取它们，加载到GL
     std::map<std::string, GLuint>::iterator textureIterator = textureNameMap.begin();
@@ -246,17 +249,20 @@ bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
     for (; textureIterator != textureNameMap.end(); ++i, ++textureIterator) {
 
         std::string textureFilename = (*textureIterator).first;  // get filename
-        LOGCATE("Assimp->Textures: the %d-th Textures fileName：%s", i, textureFilename.c_str());
+        LOGCATE("%s LoadTexturesToGL->textures: the %i-th textures filename:%s", TAG_ASSIMP.c_str(), i,
+                textureFilename.c_str());
         std::string textureFullPath = modelTextureDirectory + "/" + textureFilename;
-        LOGCATE("Assimp->Textures: the %u-th Textures file full path：%s ", i,
+        LOGCATE("%s LoadTexturesToGL->textures: the %i-th textures file full path:%s", TAG_ASSIMP.c_str(),
+                i,
                 textureFullPath.c_str());
         (*textureIterator).second = textureGLNames[i];      // save texture id for filename in map // 保存贴图中文件名的纹理id
 
         // load the texture using OpenCV // 使用OpenCV加载这个纹理
         cv::Mat textureImage = cv::imread(textureFullPath);
-        LOGCATE("OpenCV->Textures: imread");
+        LOGCATE("%s LoadTexturesToGL->textures: opencv imread path:%s", TAG_ASSIMP.c_str(),
+                textureFullPath.c_str());
         if (!textureImage.empty()) {
-            LOGCATE("OpenCV->Textures: Mat non-null ");
+            LOGCATE("%s LoadTexturesToGL->textures: opencv mat non-null", TAG_ASSIMP.c_str());
             // opencv reads textures in BGR format, change to RGB for GL
             // opencv以BGR格式读取纹理，为GL更改为RGB
             cv::cvtColor(textureImage, textureImage, CV_BGR2RGB);
@@ -289,8 +295,8 @@ bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
              */
             // bind the texture // 绑定纹理
             glBindTexture(GL_TEXTURE_2D, textureGLNames[i]); // 将命名纹理绑定到纹理目标
-            LOGCATE("OpenCV->Textures: Bind Textures--> name= %d ", textureGLNames[i]);
-
+            LOGCATE("%s LoadTexturesToGL->textures: opencv bind textures name= %i", TAG_ASSIMP.c_str(),
+                    textureGLNames[i]);
             // specify linear filtering  // 指定线性滤波
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -334,14 +340,15 @@ bool AssimpMate::LoadTexturesToGL(std::string modelFilePath) {
              * 参数9-data:指定指向内存中图像数据的指针。
              */
             // load the OpenCV Mat into GLES // 加载OpenCV Mat到GLES
-            LOGCATE("OpenCV->Textures: Textures target--> width= %d height= %d pixels= %d",
+            LOGCATE("%s LoadTexturesToGL->textures: target: width= %i height= %i pixels= %i",
+                    TAG_ASSIMP.c_str(),
                     textureImage.cols,
                     textureImage.rows, textureImage.data);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureImage.cols,
                          textureImage.rows, 0, GL_RGB, GL_UNSIGNED_BYTE,
                          textureImage.data);  // 指定二维纹理图像
         } else {
-            LOGCATE("OpenCV->Textures: Mat is null");
+            LOGCATE("%s LoadTexturesToGL->textures: mat is null", TAG_ASSIMP.c_str());
             //Cleanup and return  // 清理并返回
             delete[] textureGLNames;
             return false;
@@ -366,15 +373,15 @@ void AssimpMate::ReadModel() {
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
-        LOGCATE("Assimp->ReadModel: path= %s, ReadModel Error= %s", source.c_str(),
-                importer->GetErrorString());
+        LOGCATE("%s ReadModel-> ReadModel Error:%s -- path:%s", TAG_ASSIMP.c_str(),
+                importer->GetErrorString(), source.c_str());
         return;
     } else {
-        LOGCATE("Assimp->ReadModel: ReadModel succeed path= %s", source.c_str());
+        LOGCATE("%s ReadModel-> ReadModel Succeed path= %s", TAG_ASSIMP.c_str(), source.c_str());
     }
 
     if (!LoadTexturesToGL(source)) {
-        LOGCATE("Assimp->ReadModel: Unable to load textures");
+        LOGCATE("%s ReadModel-> unable to load textures", TAG_ASSIMP.c_str());
         return;
     }
 
@@ -384,7 +391,7 @@ void AssimpMate::ReadModel() {
 
 void AssimpMate::init(std::string modelPath) {
     source = modelPath;
-    LOGCATE("Assimp->init: init source: %s", source.c_str());
+    LOGCATE("%s ReadModel-> init source: %s", TAG_ASSIMP.c_str(), source.c_str());
 }
 
 

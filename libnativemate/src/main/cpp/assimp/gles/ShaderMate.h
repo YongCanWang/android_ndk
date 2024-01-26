@@ -12,14 +12,16 @@
 #include "../utils/AssetHelper.h"
 
 
-
 GLuint LoadShaders(std::string vertexShaderCode, std::string fragmentShaderCode);
 
 GLuint GetAttributeLocation(GLuint programID, std::string variableName);
 
 GLint GetUniformLocation(GLuint programID, std::string uniformName);
 
+const std::string TAG_SHADER = "Shader-->";
+
 class ShaderMate {
+
 
 };
 

@@ -15,7 +15,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat"
 #define JNIREG_CLASS "com/mapscloud/libnativemate/assimp/AssimpMate"// TODO 指定要注册的类
-
+const std::string TAG_JNImpl = "JNImpl-->";
 std::string assetsObjPath;
 AssetHelper *assetHelper;
 ModelLoader *modelLoader = nullptr;
@@ -50,13 +50,12 @@ native_doubleTapAction(JNIEnv *env, jclass clazz) {
 
 JNIEXPORT void JNICALL native_init(JNIEnv *env, jclass clazz, jstring modelPath) {
 //    modelPath =  "/storage/emulated/0/trans/navi3/model-merge/Man.obj";
-    LOGCATE("init assimp");
-    LOGCATE("modelPath: %s ", modelPath);
+    LOGCATE("%s native_init-> init assimp", TAG_JNImpl.c_str());
     const char *modelPathChar = env->GetStringUTFChars(modelPath, NULL);
-    LOGCATE("modelPathChar: %s ", modelPathChar);
-
+    LOGCATE("%s native_init-> modelPath:%s", TAG_JNImpl.c_str(), modelPathChar);
     modelLoader = new ModelLoader();
-    modelLoader->init(assetsObjPath);
+//    modelLoader->init(assetsObjPath);
+    modelLoader->init(modelPathChar);
     modelLoader->ReadModel();
 }
 
@@ -78,7 +77,7 @@ JNINativeMethod methods[] = {
         {"moveAction",        "(FF)V",                 (void *) native_moveAction}, // java与native绑定
         {"doubleTapAction",   "()V",                   (void *) native_doubleTapAction}, // java与native绑定
         {"getAssetsFilePath", "(Landroid/content/res/AssetManager;Ljava/lang/String;)V",
-                                                                           (void *) native_getAssetsFilePath}, // java与native绑定
+                                                       (void *) native_getAssetsFilePath}, // java与native绑定
 };
 
 //2.实现JNI_OnLoad方法，在加载动态库后，自动执行动态注册

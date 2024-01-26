@@ -20,6 +20,7 @@ AssetHelper::AssetHelper(JNIEnv *env, jobject assetManager,
     // 保存应用内部数据存储路径——我们将提取资源并保存在这里
     const char *cPathToInternalDir;
     cPathToInternalDir = env->GetStringUTFChars(pathToInternalDir, NULL);
+    LOGCATE("%s Asset-> save the target path: %s", TAG_ASSET.c_str(), cPathToInternalDir);
     apkInternalPath = std::string(cPathToInternalDir);
     env->ReleaseStringUTFChars(pathToInternalDir, cPathToInternalDir);
 
@@ -46,9 +47,9 @@ std::string AssetHelper::StartExtract() {
 //            ExtractAssetReturnFilename("obj/Man.JPG", texFilename);
 
     if (isFilesPresent) {
-        LOGCATE("Assets: Model exist!", objFilename.c_str());
+        LOGCATE("%s Asset-> Model exist: %s", TAG_ASSET.c_str(), objFilename.c_str());
     } else {
-        LOGCATE("Assets: Model %s does not exist!", objFilename.c_str());
+        LOGCATE("%s Assets-> Model %s does not exist!", TAG_ASSET.c_str(), objFilename.c_str());
     }
     return objFilename;
 }
@@ -68,7 +69,7 @@ bool AssetHelper::ExtractAssetReturnFilename(std::string assetName, std::string 
     // 检查该文件是否已被提取，并且在应用程序的内部目录中可用
     FILE *file = fopen(filename.c_str(), "rb");
     if (file && checkIfFileIsAvailable) {
-        LOGCATE("Assets: Found extracted file in assets: %s", filename.c_str());
+        LOGCATE("%s Asset-> found extracted file in assets: %s", TAG_ASSET.c_str(), filename.c_str());
         fclose(file);
         pthread_mutex_unlock(&threadMutex);
         return true;
@@ -97,9 +98,9 @@ bool AssetHelper::ExtractAssetReturnFilename(std::string assetName, std::string 
         AAsset_close(asset);
         result = true;
 
-        LOGCATE("Assets: Asset extracted: %s", filename.c_str());
+        LOGCATE("%s Asset-> asset extracted: %s", TAG_ASSET.c_str(), filename.c_str());
     } else {
-        LOGCATE("Assets: Asset not found: %s", assetName.c_str());
+        LOGCATE("%s Asset-> asset not found: %s", TAG_ASSET.c_str(), assetName.c_str());
     }
 
     pthread_mutex_unlock(&threadMutex);

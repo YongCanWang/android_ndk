@@ -10,7 +10,7 @@
 #include "../../assimp/core/AssimpMate.h"
 
 class GLESMate {
-
+    const std::string TAG_GL = "GL-->";
 private:
     GLint shaderProgramID;
     GLuint vertexAttribute, vertexUVAttribute;     // attributes for shader variables
