@@ -5,11 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.Log;
-
-import com.mapscloud.libnativemate.assimp.AssimpMate;
-
 import java.io.File;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -115,15 +111,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        Log.e(TAG, "文件路径: " + file.getPath());
 
         String rootPath =
-                Environment.getExternalStorageDirectory().getAbsolutePath() + "/trans";
-//        String modelObjPath = rootPath + "/navi3/model-merge";
-        String modelObjPath = rootPath + "/obj";
-        File file1 = new File(modelObjPath, "QiZiXingChe.obj");
-        Log.e(TAG, "init: 模型文件路径：" + file1.getPath());
-        Log.e(TAG, "init: 模型文件是否存在：" + file1.exists());
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/trans/navi3/model";
+        String modelObjPath = rootPath + "/ShangHai-2023-12-15-1540";
+        File modelFile = new File(modelObjPath, "ShangHai.obj");
+        Log.e(TAG, "init: 模型文件路径：" + modelFile.getPath());
+        Log.e(TAG, "init: 模型文件是否存在：" + modelFile.exists());
         AssimpMate.getAssetsFilePath(context.getAssets(), context.getFilesDir().getAbsolutePath());
-        AssimpMate.init(file1.getPath());
-
+        AssimpMate.init(modelFile.getPath());
     }
 
 

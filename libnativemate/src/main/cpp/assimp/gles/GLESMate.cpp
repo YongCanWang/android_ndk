@@ -23,11 +23,11 @@ void GLESMate::init() {
     if (strstr(versionStr, "OpenGL ES 3.")
 //    && gl3stubInit()
             ) {
-        LOGCATE("%s init-> Device Supports GLES 3", TAG_GL.c_str());
+        LOGCATI("%s init-> Device Supports GLES 3", TAG_GL.c_str());
     } else {
-        LOGCATE("%s init-> Device Supports GLES 2", TAG_GL.c_str());
+        LOGCATI("%s init-> Device Supports GLES 2", TAG_GL.c_str());
     }
-    LOGCATE("%s init-> gl_shading_language_version:%s", TAG_GL.c_str(),
+    LOGCATI("%s init-> gl_shading_language_version:%s", TAG_GL.c_str(),
             glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     std::string vertexShader = "shaders/modelTextured.vsh";
@@ -64,37 +64,37 @@ void GLESMate::Render3DModel(std::vector<struct MeshInfo> modelMeshes, glm::mat4
     glUniform1i(textureSamplerLocation, 0);
 
     unsigned int numberOfLoadedMeshes = modelMeshes.size();
-    LOGCATE("%s Render3DModel-> model meshes size:%i", TAG_GL.c_str(), numberOfLoadedMeshes);
+//    LOGCATE("%s Render3DModel-> model meshes size:%i", TAG_GL.c_str(), numberOfLoadedMeshes);
     // render all meshesgit
     for (unsigned int n = 0; n < numberOfLoadedMeshes; ++n) {
         // Texture
         if (modelMeshes[n].textureIndex) {
             glBindTexture(GL_TEXTURE_2D, modelMeshes[n].textureIndex);
-            LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture:%i", TAG_GL.c_str(), n,
-                    modelMeshes[n].textureIndex);
+//            LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture:%i", TAG_GL.c_str(), n,
+//                    modelMeshes[n].textureIndex);
         }
 
         // Faces
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelMeshes[n].faceBuffer);
-        LOGCATE("%s Render3DModel-> bind the %i-th mesh's face:%i", TAG_GL.c_str(), n,
-                modelMeshes[n].faceBuffer);
+//        LOGCATE("%s Render3DModel-> bind the %i-th mesh's face:%i", TAG_GL.c_str(), n,
+//                modelMeshes[n].faceBuffer);
         // Vertices
         glBindBuffer(GL_ARRAY_BUFFER, modelMeshes[n].vertexBuffer);
-        LOGCATE("%s Render3DModel-> bind the %i-th mesh's vertices:%i", TAG_GL.c_str(), n,
-                modelMeshes[n].vertexBuffer);
+//        LOGCATE("%s Render3DModel-> bind the %i-th mesh's vertices:%i", TAG_GL.c_str(), n,
+//                modelMeshes[n].vertexBuffer);
         glEnableVertexAttribArray(vertexAttribute);
         glVertexAttribPointer(vertexAttribute, 3, GL_FLOAT, 0, 0, 0);
 
         // Texture coords
         glBindBuffer(GL_ARRAY_BUFFER, modelMeshes[n].textureCoordBuffer);
-        LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture coordinates:%i", TAG_GL.c_str(), n,
-                modelMeshes[n].textureCoordBuffer);
+//        LOGCATE("%s Render3DModel-> bind the %i-th mesh's texture coordinates:%i", TAG_GL.c_str(), n,
+//                modelMeshes[n].textureCoordBuffer);
         glEnableVertexAttribArray(vertexUVAttribute);
         glVertexAttribPointer(vertexUVAttribute, 2, GL_FLOAT, 0, 0, 0);
 
         glDrawElements(GL_TRIANGLES, modelMeshes[n].numberOfFaces * 3, GL_UNSIGNED_INT, 0);
-        LOGCATE("%s Render3DModel-> draw the %i-th mesh:%i", TAG_GL.c_str(), n,
-                modelMeshes[n].numberOfFaces);
+//        LOGCATE("%s Render3DModel-> draw the %i-th mesh:%i", TAG_GL.c_str(), n,
+//                modelMeshes[n].numberOfFaces);
         // unbind buffers
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mapscloud.libnativemate.assimp.MyGLSurfaceView
+import com.mapscloud.libnativemate.assimp.SceneView
 import com.mapscloud.ndk.utils.PermissionsUtils
 
 class MainActivity : AppCompatActivity() {

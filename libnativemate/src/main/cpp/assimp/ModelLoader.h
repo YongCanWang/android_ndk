@@ -16,6 +16,7 @@ private:
     GLMMate *glmMate = nullptr;
     GLESMate *glesMate;
     std::vector<float> modelDefaultPosition;
+    std::vector<float> viewPositionDefault;
     int screenWidth;
     int screenHeight;
 
